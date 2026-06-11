@@ -2,7 +2,6 @@ services:
   - type: web
     name: ai-notatnik-api
     runtime: node
-    rootDir: backend
     buildCommand: npm install
     startCommand: node index.js
     envVars:
