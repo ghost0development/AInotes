@@ -18,7 +18,7 @@ app.post("/transcribe", async (req, res) => {
     const summary = await analyzeMeeting(transcription);
     
     res.json({ transcription, summary });
-  } catch (e: any) {
+  } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
