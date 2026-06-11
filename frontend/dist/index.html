@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Notatnik</title>
+  <style>
+    :root { --bg: #080C18; --card: #111827; --cyan: #00D4FF; --violet: #7C3AED; --gray: #94A3B8; }
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #F0F4FF; min-height: 100vh; }
+    .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+    header { text-align: center; margin-bottom: 40px; }
+    .header { font-family: 'Courier New', monospace; color: var(--cyan); font-size: 14px; }
+    .card { background: var(--card); border: 1px solid rgba(0, 212, 255, 0.12); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .btn { display: block; width: 100%; padding: 16px; margin: 8px 0; border-radius: 28px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-primary { background: var(--cyan); color: #000; }
+    .btn-secondary { background: transparent; border: 1px solid var(--cyan); color: var(--cyan); }
+    .footer { text-align: center; padding: 20px; color: var(--cyan); font-size: 12px; }
+    .terminal { color: var(--cyan); font-family: monospace; margin: 8px 0; }
+    .result { color: var(--gray); line-height: 1.5; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header">// AI NOTATNIK NIERUCHOMOŚCI</div>
+    </header>
+    <main id="main">
+      <div class="card">
+        <button class="btn btn-primary" onclick="startRecording()">🎙️ Nagraj spotkanie</button>
+        <button class="btn btn-secondary" onclick="startRecording()">📁 Wgraj plik audio</button>
+      </div>
+    </main>
+    <footer class="footer">🔒 Dane przetwarzane w UE (RODO)</footer>
+  </div>
+
+  <script>
+    const API_URL = 'https://ainotes-atow.onrender.com';
+    let usage = localStorage.getItem('usage') || 0;
+
+    function startRecording() {
+      if (++usage >= 3) { showPaywall(); return; }
+      localStorage.setItem('usage', usage);
+      showProcessing();
+      setTimeout(() => {
+        const mockResult = `🎯 Kluczowe wnioski:\n\nBudżet: 650 tys. PLN\nTermin: 2026 Q2\nStatus: Przyjęte\n\n🎯 Następny krok: Umowa`;
+        showResult(mockResult);
+      }, 1500);
+    }
+
+    function showProcessing() {
+      document.getElementById('main').innerHTML = `
+        <div class="card">
+          <div class="terminal">> Transkrypcja audio... [OK]</div>
+          <div class="terminal">> Analiza kontekstu... [OK]</div>
+          <div class="terminal">> Generowanie podsumowania... [OK]</div>
+        </div>`;
+    }
+
+    function showResult(text) {
+      document.getElementById('main').innerHTML = `
+        <div class="card"><div class="result">${text.replace(/\\n/g, '<br>')}</div></div>
+        <button class="btn btn-primary" onclick="copyResult()">📋 Kopiuj do schowka</button>
+        <button class="btn btn-secondary" onclick="shareWhatsApp()">💬 Otwórz w WhatsApp</button>`;
+    }
+
+    function showPaywall() {
+      document.getElementById('main').innerHTML = `
+        <div class="card"><div>Wykorzystałeś limit. Odblokuj za 49 PLN/mies.</div></div>
+        <button class="btn btn-primary" onclick="alert('Redirect to Stripe')">Rozpocznij okres próbny</button>`;
+    }
+
+    function copyResult() {
+      alert('Skopiowano!');
+    }
+
+    function shareWhatsApp() {
+      alert('Otwieram WhatsApp...');
+    }
+  </script>
+</body>
+</html>
